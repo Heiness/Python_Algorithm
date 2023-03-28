@@ -1,6 +1,5 @@
 import sys; input = sys.stdin.readline
 from collections import deque
-from pprint import pprint
 
 n = int(input())
 graph = [ list(map(int,input().split())) for _ in range(n) ]
