@@ -1,4 +1,4 @@
-# 백트래킹 + 브루트포스
+# 브루트포스
 import sys; input = sys.stdin.readline
 from itertools import combinations
 
