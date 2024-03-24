@@ -1,35 +1,29 @@
-from sys import stdin
-from itertools import combinations
-from collections import defaultdict
+import sys
+from collections import Counter
+input = sys.stdin.readline
 
-input = stdin.readline
-n, s = map(int, input().split())
-arr = list(map(int, input().split()))
+def main():
+    N, S = map(int, input().split())
+    arr = tuple(map(int, input().split()))
+    m = N//2
 
+    def f(li):
+        t = [0]
+        for a in li:
+            tmp = [a+b for b in t]
+            t.extend(tmp)
+        return  t
 
-# 부분수열 합 구하기
-def get_sub_sum(arr:list, result:defaultdict):
-    for count in range(1, len(arr)+1):
-        for combi in combinations(arr, count):
-            c_sum = sum(combi)
-            result[c_sum] += 1
+    l = f(arr[:m])
+    r = Counter(f(arr[m:]))
+    
+    c = 0
+    if not S: c = -1
 
+    for lk in l:
+        if (rk:=S-lk) in r:
+            c += r[rk]
+    print(c)
 
-# defaultdict를 이용해서 특정 합이 나오는 경우의 수 count
-sub_sum1 = defaultdict(int)
-sub_sum2 = defaultdict(int)
-
-get_sub_sum(arr[n//2:], sub_sum1)
-get_sub_sum(arr[:n//2], sub_sum2)
-
-# 각 부분 수열에 S가 있는 경우 구하기
-answer = sub_sum1[s] + sub_sum2[s]
-
-
-# 두 부분수열을 더해서 S가 나오는 경우의 수 구하기
-for s1 in sub_sum1:
-    if s-s1 in sub_sum2:
-        answer += sub_sum1[s1] * sub_sum2[s-s1]
-
-
-print(answer)
+if __name__ == "__main__":
+    main()
