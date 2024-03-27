@@ -1,20 +1,17 @@
-x = int(input())
-
-case = list(map(int, input().split()))
-reverse_case = case[::-1]
-
-increase = [1 for i in range(x)] # 가장 긴 증가하는 부분 수열
-decrease = [1 for i in range(x)] # 가장 긴 감소하는 부분 수열(reversed)
-
-for i in range(x):
-    for j in range(i):
-        if case[i] > case[j]:
-            increase[i] = max(increase[i], increase[j]+1)
-        if reverse_case[i] > reverse_case[j]:
-            decrease[i] = max(decrease[i], decrease[j]+1)
-
-result = [0 for i in range(x)]
-for i in range(x):
-    result[i] = increase[i] + decrease[x-i-1] -1
-
-print(max(result))
+from bisect import bisect_left
+def lis(arr):
+    if not arr:return 0
+    dp = [arr[0]]
+    for i in range(len(arr)):
+        if dp[-1]<arr[i]:
+            dp.append(arr[i])
+        else:
+            dp[bisect_left(dp,arr[i])] = arr[i]
+    return len(dp)
+ 
+n = int(input())
+data = [*map(int,input().split())]
+mx = -1
+for i in range(n):
+    mx = max(mx,lis(data[:i+1])+lis([-i for i in data[i:]])-1)
+print(mx)
