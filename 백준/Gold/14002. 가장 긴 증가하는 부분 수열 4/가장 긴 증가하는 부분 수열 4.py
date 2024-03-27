@@ -1,20 +1,30 @@
-n = int(input())
-data = list(map(int, input().split()))
-dp = [1] * (n+1)
+import sys; input = sys.stdin.readline
+from bisect import bisect_left
 
-for i in range(len(data)):
-    for j in range(i):
-        if data[j] < data[i]:
-            dp[i] = max(dp[i], dp[j]+1)
+def main():
+    N = int(input())
+    *A, = map(int, input().split())
 
-print(max(dp))
-x = max(dp)
+    LIS = [1, ]
+    substr = [A[0]]
+    for i in range(1, N):
+        if A[i] > substr[-1]:
+            substr.append(A[i])
+            LIS.append(len(substr))
+        else:
+            l = bisect_left(substr, A[i])
+            substr[l] = A[i]
+            LIS.append(l+1) 
+    j = len(substr)
+    ans = [0]*len(substr)
+    i = N-1
+    while i >= 0:
+        if LIS[i] == j:
+            j -= 1
+            ans[j] = A[i]
+        i -= 1
+    print(len(ans))
+    print(*ans)
+    return
 
-result = []
-for i in range(n-1, -1, -1):
-    if dp[i] == x:
-        result.append(data[i])
-        x -= 1
-result.reverse()
-for r in result:
-    print(r, end=' ')
+main()
