@@ -36,7 +36,8 @@ public class Main {
 			}
 		}
 		
-		System.out.println(result.size());
-		for(int n: result) System.out.print(n+" ");
+		sb.append(result.size()).append("\n");
+		for(int n: result) sb.append(n).append(" ");
+		System.out.println(sb);
 	}
 }
