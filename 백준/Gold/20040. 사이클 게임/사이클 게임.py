@@ -16,5 +16,6 @@ ans = 0
 
 for i in range(M):
     union(*map(int,input().split()),i+1)
+    if ans!=0: break
 
 print(ans)
