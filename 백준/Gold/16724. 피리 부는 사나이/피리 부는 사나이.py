@@ -1,36 +1,44 @@
-N, M = map(int, input().split())
-maps = [list(input()) for _ in range(N)]
+import sys
 
-visited = [[0 for _ in range(M)] for _ in range(N)]
-safe_zone = 0
+input = sys.stdin.readline 
 
-def dfs(x, y):
-    global safe_zone
-	
-    # 현재 위치 방문처리
-    visited[y][x] = True
-    # 사이클에 현재 위치 추가
-    cycle.append([x, y])
-    
-    if maps[y][x] == 'U' and y > 0: # 위로
-        y -= 1
-    elif maps[y][x] == 'D' and y < N-1: # 아래
-        y += 1
-    elif maps[y][x] == 'L' and x > 0: # 왼쪽
-        x -= 1
-    elif maps[y][x] == 'R' and x < M-1: # 오른쪽
-        x += 1
+d = dict()
+d['U'] = (-1, 0)
+d['D'] = (1, 0)
+d['R'] = (0, 1)
+d['L'] = (0, -1)
 
-    if visited[y][x]: # 이동한 위치를 이미 방문한 경우
-        if [x, y] in cycle: # 사이클에 이 위치가 포함되어 있다면
-            safe_zone += 1 # 사이클이 생겼으므로 세이프 존을 설치해야한다.
-    else: # 방문안했으면 다음 위치로
-        dfs(x, y)
+res = 0
+def dfs(x, y, board, visited, fin):
 
-for x in range(M):
-    for y in range(N):
-        if not visited[y][x]:
-            cycle = []
-            dfs(x, y)
-            
-print(safe_zone)
+  global res
+  visited[x][y] = 1
+  dx, dy = d[board[x][y]]
+  nx = x + dx
+  ny = y + dy
+
+  if visited[nx][ny] == 0:
+    dfs(nx, ny, board, visited, fin)
+  else:
+    if fin[nx][ny] == 0:
+      res += 1
+
+
+  fin[x][y] = 1
+def solution(n, m, board):
+  visited=  [[0] * m for _ in range(n)]
+  fin = [[0] * m for _ in range(n)]
+  
+  for i in range(n):
+    for j in range(m):
+      if visited[i][j] == 0:
+
+        dfs(i, j, board, visited, fin)
+
+  return res
+if __name__ == "__main__":
+  n, m = map(int, input().strip().split())
+  board = []
+  for _ in range(n):
+    board.append(list(input().strip()))
+  print(solution(n, m, board))
