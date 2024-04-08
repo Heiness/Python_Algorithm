@@ -34,7 +34,7 @@ public class Main {
     static StringBuilder sb = new StringBuilder();
     static int N, M;
     static int[] A, B;
-    static List<Seq> set;
+    static Set<Seq> set;
 
     static void combRe(int start, int idx){
         if(idx >= M){
@@ -65,7 +65,7 @@ public class Main {
         StringTokenizer st;
         st=new StringTokenizer(br.readLine(), " ");
         N = Integer.parseInt(st.nextToken()); M = Integer.parseInt(st.nextToken());
-        A = new int[N]; B = new int[M]; set = new ArrayList<>();
+        A = new int[N]; B = new int[M]; set = new HashSet<>();
 
         st = new StringTokenizer(br.readLine(), " ");
         for(int i = 0; i < N; i++)
