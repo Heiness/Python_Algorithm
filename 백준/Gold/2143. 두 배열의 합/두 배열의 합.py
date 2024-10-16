@@ -9,10 +9,24 @@ arrM = list(map(int, input().split()))
 
 sumN, sumM = [], []
 
-for i in range(n): 
-    for j in range(i+1, n+1): sumN.append(sum(arrN[i:j]))
+# for i in range(n): 
+#     for j in range(i+1, n+1): sumN.append(sum(arrN[i:j]))
+# for i in range(m):
+#     for j in range(i+1, m+1): sumM.append(sum(arrM[i:j]))
+
+for i in range(n):
+    temp = arrN[i]
+    sumN.append(temp)
+    for j in range(i + 1, n):
+        temp += arrN[j]
+        sumN.append(temp)
+
 for i in range(m):
-    for j in range(i+1, m+1): sumM.append(sum(arrM[i:j]))
+    temp = arrM[i]
+    sumM.append(temp)
+    for j in range(i + 1, m):
+        temp += arrM[j]
+        sumM.append(temp)
 
 sumN.sort()
 sumM.sort()
