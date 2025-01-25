@@ -1,16 +1,13 @@
-import sys;input = sys.stdin.readline
-N = int(input())
-lines = {} # 해쉬가 빠를까, 이차원 배열이 빠를까?
-length = [0] * N
-for _ in range(N):
-  a, b = map(int,input().split())
-  lines[a] = b
+import sys; input = sys.stdin.readline
+from bisect import bisect_left
 
-lines = sorted(lines.items()) # sorted사용시 list로 변환됨.
-for i in range(N):
-  length[i] = 1
-  for j in range(0,i):
-    if lines[j][1] < lines[i][1]:
-      length[i] = max(length[i], length[j]+1)
-      
-print(N-max(length))
+N = int(input())
+nums = [ list(map(int,input().split())) for _ in range(N) ]
+nums.sort()
+ans = [nums[0][1]]
+
+for v in nums[1:]:
+    if v[1]>ans[-1]: ans.append(v[1])
+    else: ans[bisect_left(ans,v[1])]=v[1]
+
+print(N-len(ans))
