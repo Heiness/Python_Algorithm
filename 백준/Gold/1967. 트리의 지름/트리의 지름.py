@@ -3,10 +3,6 @@ sys.setrecursionlimit(10**6)
 input = sys.stdin.readline
 
 def dfs(node, accumulated, visited):
-    """
-    현재 노드에서 시작해 누적 거리(accumulated)를 기록하며 DFS를 진행합니다.
-    각 재귀 호출에서 가장 먼 노드와 해당 거리를 반환합니다.
-    """
     visited[node] = True
     farthest_node = node
     max_distance = accumulated
