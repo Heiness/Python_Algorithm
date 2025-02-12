@@ -14,14 +14,15 @@ start, end = map(int, input().split())
 pq = []
 visited = [sys.maxsize] * (N+1)
 path = [[] for _ in range(N+1)]
-heapq.heappush(pq,[start,0])
+heapq.heappush(pq,[0,start])
 path[start].append(start)
 visited[start] = 0
 
 while pq:
-    now, cost = heapq.heappop(pq)
+    cost, now = heapq.heappop(pq)
 
     if cost > visited[now]: continue
+    if now == end: break
 
     for next, nc in graph[now]:
         tmp = cost + nc
@@ -32,7 +33,7 @@ while pq:
             for i in path[now]:
                 path[next].append(i)
             path[next].append(next)
-            heapq.heappush(pq,[next,tmp])
+            heapq.heappush(pq,[tmp,next])
 
 print(visited[end]) 
 print(len(path[end]))
