@@ -1,12 +1,19 @@
 import sys
-read = sys.stdin.readline
-N, K = map(int, read().split())
-cache = {0: 0}
-for _ in range(N):
-    curr_w, curr_v = map(int, read().split())
-    temp = {}
-    for w, v in cache.items():
-        if curr_w + w <= K and curr_v + v > cache.get(curr_w + w, 0):
-            temp[curr_w + w] = curr_v + v
-    cache.update(temp)
-print(max(cache.values()))
+
+n, k = map(int, sys.stdin.readline().split()) 
+arr = [(0, 0)]
+chart = [[0] * (k + 1) for _ in range(n + 1)]
+for _ in range(n):
+    w, v = map(int, sys.stdin.readline().split())
+    arr.append((w, v))
+
+for i in range(1, n + 1):   # 물건 하나씩
+    for j in range(1, k + 1):  # 1~k무게까지 표 작성
+        w = arr[i][0]
+        v = arr[i][1]
+        if j < w:   # 해당 물건이 더 큰 경우, 이전 표값으로 넣기
+            chart[i][j] = chart[i - 1][j]
+        else:   # 해당 물건이 들어가는 사이즈인 경우
+            chart[i][j] = max(chart[i - 1][j], v + chart[i - 1][j - w])    # 이전 값과 비교
+
+print(chart[n][k])
