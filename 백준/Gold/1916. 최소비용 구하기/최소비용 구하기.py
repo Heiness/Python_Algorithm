@@ -26,11 +26,9 @@ def dijk(n: int):
         if now == end: return
 
         for next, cost in graph[now]:
-            nc = c + cost
-
-            if distance[next] > nc:
-                distance[next] = nc
-                heapq.heappush(pq,(nc,next))
+            if distance[next] > c + cost:
+                distance[next] = c + cost
+                heapq.heappush(pq,(c + cost,next))
 
 dijk(start)
 print(distance[end])
