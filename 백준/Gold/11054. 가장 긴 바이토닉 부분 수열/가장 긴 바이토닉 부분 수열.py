@@ -1,17 +1,23 @@
-from bisect import bisect_left
-def lis(arr):
-    if not arr:return 0
-    dp = [arr[0]]
-    for i in range(len(arr)):
-        if dp[-1]<arr[i]:
-            dp.append(arr[i])
-        else:
-            dp[bisect_left(dp,arr[i])] = arr[i]
-    return len(dp)
- 
 n = int(input())
-data = [*map(int,input().split())]
-mx = -1
+A = list(map(int,input().split())) 
+
+reverseA = A[::-1] 
+
+inc_dp = [1]*n # 증가 dp
+dec_dp = [1]*n # 감소 dp
+
 for i in range(n):
-    mx = max(mx,lis(data[:i+1])+lis([-i for i in data[i:]])-1)
-print(mx)
+    for j in range(i):
+        if A[i] > A[j]:
+            inc_dp[i] = max(inc_dp[i], inc_dp[j]+1)
+        
+        if reverseA[i] > reverseA[j]:
+            dec_dp[i] = max(dec_dp[i], dec_dp[j]+1)
+
+dec_dp = dec_dp[::-1]
+ 
+result = []
+for i in range(n):
+    result.append(dec_dp[i] + inc_dp[i]-1)
+
+print(max(result))
