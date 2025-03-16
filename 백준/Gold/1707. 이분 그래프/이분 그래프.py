@@ -1,35 +1,43 @@
-import sys; input = sys.stdin.readline
 from collections import deque
+import sys
+input = sys.stdin.readline
 
-K = int(input())
+def is_bipartite_graph(graph, V):
+    colors = [0] * (V + 1)  # 0: 방문 안 함, 1: 색1, -1: 색2
 
-def dfs(graph, V):
-    for i in range(1,V+1):
-        if not visited[i] : visited[i] = 1
-        q = deque()
-        q.append(i)
+    for start in range(1, V + 1):
+        if colors[start] == 0:  # 방문하지 않은 정점에 대해 BFS 수행
+            queue = deque([start])
+            colors[start] = 1  # 시작 정점을 색1로 색칠
 
-        while q:
-            now = q.popleft()
+            while queue:
+                node = queue.popleft()
+                current_color = colors[node]
 
-            for j in graph[now]:
-                if not visited[j]: 
-                    visited[j] = -visited[now]
-                    q.append(j)
-                else:
-                    if visited[now] == visited[j]: return False
+                for neighbor in graph[node]:
+                    if colors[neighbor] == 0:  # 방문하지 않은 인접 정점
+                        colors[neighbor] = -current_color  # 다른 색으로 색칠
+                        queue.append(neighbor)
+                    elif colors[neighbor] == current_color:  # 인접 정점이 같은 색인 경우
+                        return False
     return True
 
+def main():
+    K = int(input())  # 테스트 케이스의 수
 
-for _ in range(K):
-    V, E = map(int,input().split())
-    graph = [[] for _ in range(V+1)]
-    visited = [0] * (V+1)
+    for _ in range(K):
+        V, E = map(int, input().split())
+        graph = [[] for _ in range(V + 1)]
 
-    for _ in range(E):
-        a, b = map(int,input().split())
-        graph[a].append(b)
-        graph[b].append(a)
+        for _ in range(E):
+            u, v = map(int, input().split())
+            graph[u].append(v)
+            graph[v].append(u)
 
-    if dfs(graph, V): print("YES")
-    else: print("NO")
+        if is_bipartite_graph(graph, V):
+            print("YES")
+        else:
+            print("NO")
+
+if __name__ == "__main__":
+    main()
