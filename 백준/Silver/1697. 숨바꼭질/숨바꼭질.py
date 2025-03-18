@@ -1,26 +1,23 @@
 import sys; input = sys.stdin.readline
 from collections import deque
 
-N, K = map(int,input().split())
+n, k = map(int, input().split())
+dist = [0] * 100_001
 
-q = deque()
-q.append(N)
-visited = [-1] * 100001
-visited[N] = 0
+def bfs(start):
+    q = deque()
+    q.append(start)
 
-while q:
-    now = q.popleft()
+    while q:
+        now = q.popleft()
+        
+        if now == k:
+            return dist[now]
 
-    if now == K:
-        print(visited[now])
-        break
 
-    if 0<= now*2 <=100000 and visited[now*2] == -1:
-        q.append(now*2)
-        visited[now*2] = visited[now] + 1
-    if 0<= now+1 <=100000 and visited[now+1] == -1:
-        q.append(now+1)
-        visited[now+1] = visited[now] + 1
-    if 0<= now-1 <=100000 and visited[now-1] == -1:
-        q.append(now-1)
-        visited[now-1] = visited[now] + 1
+        for next in [now-1,now+1,now*2]:
+            if 0<=next<100_001 and (dist[next]==0 or dist[next]>=dist[now]+1):
+                dist[next] = dist[now] +1 
+                q.append(next)
+
+print(bfs(n))
