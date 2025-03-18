@@ -1,32 +1,55 @@
-import sys; input = sys.stdin.readline
+import sys
+input = sys.stdin.readline
+
+def union(a, b):
+    a = find(a)
+    b = find(b)
+    if a < b:
+        parent[b] = a
+    else:
+        parent[a] = b
+
+
 def find(x):
-    if parent[x] != x: parent[x] = find(parent[x])
+    if parent[x] != x:
+        parent[x] = find(parent[x])
     return parent[x]
 
-def union(a,b):
-    global cycle
-    a, b = find(a), find(b)
-    if a==b: cycle.update([a,b])
-    elif a in cycle or b in cycle: cycle.update([a,b])
-    else: parent[max(a,b)] = min(a,b)
-tc = 1
 
-while 1:
-    N, M = map(int, input().split())
-    if N==0 and M==0: break
-    parent = list(range(N+1))
+T = 0
+
+while True:
+    T +=1
+    n,m = map(int,input().split())
+
+    if n==0 and m==0:
+        break
+
+    parent = [ i for i in range(n+1)]
+
+
     cycle = set()
-    for _ in range(M):
-        union(*map(int,input().split()))
-    ans = 0
-    
-    for i in range(1,N+1): find(i)
-    trees = set(parent[1:])
-    
-    for v in trees:
-        if v not in cycle: ans+=1
-    
-    if ans>1: print(f"Case {tc}: A forest of {ans} trees.")
-    elif ans==1: print(f"Case {tc}: There is one tree.")
-    else: print(f"Case {tc}: No trees.")
-    tc += 1
+
+    for i in range(m):
+        a,b= map(int,input().split())
+        if find(a) == find(b):
+            cycle.add(parent[a])
+            cycle.add(parent[b])
+
+        if parent[a] in cycle or parent[b] in cycle:
+            cycle.add(parent[a])
+            cycle.add(parent[b])
+        union(a, b)
+
+    for i in range(n+1):
+        find(i)
+
+    parent = set(parent)
+    ans = sum([1 if i not in cycle else 0 for i in parent])-1
+
+    if ans == 0:
+        print('Case %d: No trees.' %T)
+    elif ans == 1:
+        print('Case %d: There is one tree.' %T)
+    else:
+        print('Case %d: A forest of %d trees.' %(T,ans))
