@@ -1,27 +1,34 @@
 import sys; input = sys.stdin.readline
 
+n = int(input())
+m = int(input())
+parent = list(range(n+1))
+
 def find(x):
     if parent[x]!=x: parent[x] = find(parent[x])
     return parent[x]
 
 def union(a,b):
-    a,b = find(a), find(b)
-    if a<b: parent[b]=a
-    else: parent[a]=b
+    a, b = find(a), find(b)
+    if a>b: parent[a] = b
+    else: parent[b] = a
+
+for i in range(n):
+    tmp = list(map(int, input().split()))
+    for idx, j in enumerate(tmp):
+        if idx<=i or not j: continue
+        union(i+1,idx+1)
+
+plan = list(map(int,input().split()))
 
 
-N, M = int(input()), int(input())
-parent = list(range(N+1))
+def answer():
+    t = find(plan[0])
+    for p in plan[1:]:
+        if t != find(parent[p]):
+            print("NO")
+            return
+    else: print("YES")
+    return
 
-for i in range(N):
-    t = list(map(int,input().split()))
-    for idx,v in enumerate(t):
-        if i==idx: continue
-        if v==1: union(i+1,idx+1)
-
-l = list(map(int,input().split()))
-for i in range(len(l)-1):
-    if find(l[i])==find(l[i+1]): continue
-    print("NO")
-    exit()
-print("YES")
+answer()
