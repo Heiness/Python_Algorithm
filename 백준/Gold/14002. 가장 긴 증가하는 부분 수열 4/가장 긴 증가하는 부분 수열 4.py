@@ -1,30 +1,27 @@
 import sys; input = sys.stdin.readline
 from bisect import bisect_left
+N = int(input())
+*nums, = map(int,input().split())
+result = [nums[0]]
+cnt = [1]
 
-def main():
-    N = int(input())
-    *A, = map(int, input().split())
+for v in nums[1:]:
+  if result[-1] < v:
+    result.append(v)
+    cnt.append(len(result))
+  else:
+    idx = bisect_left(result,v)
+    result[idx] = v
+    cnt.append(idx+1)
 
-    LIS = [1, ]
-    substr = [A[0]]
-    for i in range(1, N):
-        if A[i] > substr[-1]:
-            substr.append(A[i])
-            LIS.append(len(substr))
-        else:
-            l = bisect_left(substr, A[i])
-            substr[l] = A[i]
-            LIS.append(l+1) 
-    j = len(substr)
-    ans = [0]*len(substr)
-    i = N-1
-    while i >= 0:
-        if LIS[i] == j:
-            j -= 1
-            ans[j] = A[i]
-        i -= 1
-    print(len(ans))
-    print(*ans)
-    return
+ck = len(result)
+ans = []
+for i,c in enumerate(cnt[::-1]):
+  if ck==0: break
+  if c==ck:
+    ans.append(nums[N-1-i])
+    ck-=1
 
-main()
+
+print(len(result))    
+print(*reversed(ans))
