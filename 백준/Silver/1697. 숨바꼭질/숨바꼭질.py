@@ -1,23 +1,24 @@
 import sys; input = sys.stdin.readline
 from collections import deque
 
-n, k = map(int, input().split())
-dist = [0] * 100_001
+MAX_VALUE = 2*100_000+1
+N, K = map(int, input().split())
+dist = [-1] * MAX_VALUE
 
-def bfs(start):
-    q = deque()
-    q.append(start)
+q = deque()
+q.append(N)
+dist[N] = 0
 
-    while q:
-        now = q.popleft()
-        
-        if now == k:
-            return dist[now]
+while q:
+    now = q.popleft()
 
 
-        for next in [now-1,now+1,now*2]:
-            if 0<=next<100_001 and (dist[next]==0 or dist[next]>=dist[now]+1):
-                dist[next] = dist[now] +1 
-                q.append(next)
+    if now == K:
+        print(dist[K])
+        break
 
-print(bfs(n))
+    for nx in [now-1,now+1,now*2]:
+        if 0<=nx<MAX_VALUE and dist[nx]==-1:
+            dist[nx] = dist[now] + 1
+            q.append(nx)
+    
